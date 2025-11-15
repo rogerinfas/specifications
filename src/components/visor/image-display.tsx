@@ -34,7 +34,7 @@ export function ImageDisplay({ showSpecificationsPanel = true }: ImageDisplayPro
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     
     // Verificar si ya existe un punto cerca de esta posición
-    const minDistance = 1; // Distancia mínima en porcentaje
+    const minDistance = 1.5; // Distancia mínima en porcentaje
     const existingPoint = points.find(point => {
       const distance = Math.sqrt(
         Math.pow(point.x - x, 2) + Math.pow(point.y - y, 2)
@@ -168,19 +168,24 @@ export function ImageDisplay({ showSpecificationsPanel = true }: ImageDisplayPro
                   const isActive = point.id === activePointId;
                   return (
                     <div key={point.id}>
+                      {/* Marcador del punto */}
                       <div
-                        className={`absolute w-4 h-4 rounded-full border-2 shadow-sm transform -translate-x-1/2 -translate-y-1/2 transition-all cursor-pointer ${
+                        className={`absolute w-4 h-4 rounded-full border-2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all ${
                           isActive 
-                            ? 'bg-primary border-primary scale-125 z-20' 
-                            : 'bg-primary/80 border-background hover:scale-110'
+                            ? 'bg-primary border-primary shadow-lg scale-125 z-20' 
+                            : 'bg-background border-primary hover:scale-110 z-10'
                         }`}
                         style={{
                           left: `${point.x}%`,
-                          top: `${point.y}%`,
+                          top: `${point.y}%`
                         }}
                         onClick={(e) => removePoint(point.id, e)}
-                        title={`Punto ${point.id}\n(${point.x.toFixed(1)}%, ${point.y.toFixed(1)}%)\nCtrl+Click para eliminar`}
-                      />
+                        title={isActive ? "Ctrl+Click para cancelar" : "Ctrl+Click para eliminar"}
+                      >
+                        <span className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-bold text-primary bg-background px-1 rounded shadow-sm whitespace-nowrap">
+                          {point.specification ? points.filter(p => p.specification).findIndex(p => p.id === point.id) + 1 : points.indexOf(point) + 1}
+                        </span>
+                      </div>
                       
                       {isActive && (
                         <div 
