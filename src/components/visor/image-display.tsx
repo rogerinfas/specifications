@@ -33,6 +33,20 @@ export function ImageDisplay({ showSpecificationsPanel = true }: ImageDisplayPro
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     
+    // Verificar si ya existe un punto cerca de esta posición
+    const minDistance = 1; // Distancia mínima en porcentaje
+    const existingPoint = points.find(point => {
+      const distance = Math.sqrt(
+        Math.pow(point.x - x, 2) + Math.pow(point.y - y, 2)
+      );
+      return distance < minDistance;
+    });
+    
+    // Si ya existe un punto cerca, no crear uno nuevo
+    if (existingPoint) {
+      return;
+    }
+    
     const newPoint: Point = {
       id: Date.now(),
       x: Math.max(0, Math.min(100, x)),
