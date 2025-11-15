@@ -1,12 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useState, useRef } from "react";
 import { MessageSquare, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Point {
   id: number;
@@ -23,7 +21,6 @@ export function ImageDisplay({
   showSpecificationsPanel = true,
 }: ImageDisplayProps) {
   const [points, setPoints] = useState<Point[]>([]);
-  const [scale, setScale] = useState(1);
   const [activePointId, setActivePointId] = useState<number | null>(null);
   const [tempSpecification, setTempSpecification] = useState("");
   const imageRef = useRef<HTMLDivElement>(null);
