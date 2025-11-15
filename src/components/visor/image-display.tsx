@@ -26,7 +26,7 @@ export function ImageDisplay({ showSpecificationsPanel = true }: ImageDisplayPro
   const [tempSpecification, setTempSpecification] = useState("");
   const imageRef = useRef<HTMLDivElement>(null);
 
-  const handleImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleImageDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageRef.current) return;
     
     const rect = imageRef.current.getBoundingClientRect();
@@ -81,10 +81,9 @@ export function ImageDisplay({ showSpecificationsPanel = true }: ImageDisplayPro
       <TransformWrapper
         initialScale={1}
         minScale={0.5}
-        maxScale={8}
+        maxScale={3}
         wheel={{ step: 0.1 }}
-        centerOnInit
-        onZoom={(ref) => setScale(ref.state.scale)}
+        doubleClick={{ disabled: false }}
       >
         {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
           <div className="relative w-full h-full">
@@ -131,7 +130,7 @@ export function ImageDisplay({ showSpecificationsPanel = true }: ImageDisplayPro
               <div 
                 ref={imageRef}
                 className="relative w-full h-full flex items-center justify-center cursor-crosshair"
-                onClick={handleImageClick}
+                onDoubleClick={handleImageDoubleClick}
               >
                 <Image
                   src="/image.png"
